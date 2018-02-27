@@ -1,4 +1,4 @@
-package meugeninua.examples.actionmode.app.di;
+package meugeninua.examples.actionmode.app.di.scopes;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

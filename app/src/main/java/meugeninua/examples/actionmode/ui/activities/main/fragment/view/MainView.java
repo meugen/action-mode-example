@@ -1,5 +1,8 @@
 package meugeninua.examples.actionmode.ui.activities.main.fragment.view;
 
+import java.util.List;
+
+import meugeninua.examples.actionmode.model.db.entities.SimpleEntity;
 import meugeninua.examples.actionmode.ui.activities.base.fragment.view.MvpView;
 
 /**
@@ -7,5 +10,5 @@ import meugeninua.examples.actionmode.ui.activities.base.fragment.view.MvpView;
  */
 public interface MainView extends MvpView {
 
-    void displayText(String text);
+    void displaySimples(List<SimpleEntity> simples);
 }

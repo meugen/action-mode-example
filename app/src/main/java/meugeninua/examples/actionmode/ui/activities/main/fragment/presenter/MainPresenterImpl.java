@@ -1,23 +1,30 @@
 package meugeninua.examples.actionmode.ui.activities.main.fragment.presenter;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Random;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+import meugeninua.examples.actionmode.app.managers.events.SimplesChangedEvent;
+import meugeninua.examples.actionmode.model.api.AppActionApi;
+import meugeninua.examples.actionmode.model.db.entities.SimpleEntity;
 import meugeninua.examples.actionmode.ui.activities.base.fragment.presenter.BasePresenter;
 import meugeninua.examples.actionmode.ui.activities.main.fragment.state.MainState;
 import meugeninua.examples.actionmode.ui.activities.main.fragment.view.MainView;
+import meugeninua.examples.actionmode.ui.rxloader.LifecycleHandler;
+import timber.log.Timber;
 
 /**
  * @author meugen
  */
 public class MainPresenterImpl extends BasePresenter<MainState> implements MainPresenter {
 
-    private static final Random RANDOM = new Random();
-
-    private String text;
-
+    @Inject LifecycleHandler lifecycleHandler;
+    @Inject AppActionApi<Void, List<SimpleEntity>> simplesActionApi;
+    @Inject Observable<SimplesChangedEvent> simplesChangedObservable;
     @Inject MainView view;
 
     @Inject
@@ -25,21 +32,36 @@ public class MainPresenterImpl extends BasePresenter<MainState> implements MainP
 
     @Override
     public void setup() {
-        if (text == null) {
-            text = new BigInteger(100, RANDOM).toString(26);
-        }
-        view.displayText(text);
+        _load();
+        subscribeToSimplesChanged();
     }
 
     @Override
     public void onRestoreState(final MainState state) {
         super.onRestoreState(state);
-        text = state.getText();
     }
 
     @Override
     public void onSaveState(final MainState state) {
         super.onSaveState(state);
-        state.setText(text);
+    }
+
+    private void subscribeToSimplesChanged() {
+        final Disposable disposable = simplesChangedObservable
+                .subscribe(event -> reload());
+        getCompositeDisposable().add(disposable);
+    }
+
+    private void reload() {
+        lifecycleHandler.destroyLoader(LOADER_ID);
+        _load();
+    }
+
+    private void _load() {
+        final Disposable disposable = simplesActionApi
+                .action(null)
+                .compose(lifecycleHandler.load(LOADER_ID))
+                .subscribe(view::displaySimples, Timber::d);
+        getCompositeDisposable().add(disposable);
     }
 }

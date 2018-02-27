@@ -5,7 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import dagger.Binds;
 import dagger.Module;
-import meugeninua.examples.actionmode.app.di.PerActivity;
+import meugeninua.examples.actionmode.app.di.qualifiers.ActivityContext;
+import meugeninua.examples.actionmode.app.di.scopes.PerActivity;
 
 /**
  * @author meugen
@@ -13,8 +14,6 @@ import meugeninua.examples.actionmode.app.di.PerActivity;
 @Module
 public abstract class BaseActivityModule {
 
-    public static final String ACTIVITY_CONTEXT = "activity_context";
-
-    @Binds @PerActivity
+    @Binds @ActivityContext @PerActivity
     abstract Context bindContext(final AppCompatActivity activity);
 }

@@ -8,5 +8,7 @@ import meugeninua.examples.actionmode.ui.activities.main.fragment.state.MainStat
  */
 public interface MainPresenter extends MvpPresenter<MainState> {
 
+    int LOADER_ID = 1;
+
     void setup();
 }

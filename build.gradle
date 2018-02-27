@@ -63,6 +63,7 @@ ext {
                             processor: "$dagger_package:dagger-android-processor:$dagger_version"
                     ]
             ],
+            timber: "com.jakewharton.timber:timber:4.6.1",
             test: [
                     junit: "junit:junit:4.12",
                     runner: "$test_package:runner:1.0.1",
