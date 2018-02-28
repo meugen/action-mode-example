@@ -1,5 +1,7 @@
 package meugeninua.examples.actionmode.ui.activities.main.fragment.state;
 
+import java.util.Collection;
+
 import meugeninua.examples.actionmode.ui.activities.base.fragment.state.MvpState;
 
 /**
@@ -7,9 +9,9 @@ import meugeninua.examples.actionmode.ui.activities.base.fragment.state.MvpState
  */
 public interface MainState extends MvpState {
 
-    String PARAM_TEXT = "text";
+    String PARAM_SELECTED_IDS = "selected_ids";
 
-    String getText();
+    Collection<Integer> getSelectedIds();
 
-    void setText(String text);
+    void setSelectedIds(Collection<Integer> selectedIds);
 }

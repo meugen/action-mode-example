@@ -38,7 +38,8 @@ public class SimplesAdapter extends RecyclerView.Adapter<SimplesAdapter.Holder> 
         selectedIds = new ArraySet<>();
     }
 
-    public void swapSimples(final List<SimpleEntity> simples) {
+    public void swapSimples(
+            final List<SimpleEntity> simples) {
         final DiffUtil.DiffResult result = DiffUtil.calculateDiff(
                 new SimpleDiffCallback(this.simples, simples));
         this.simples = simples;
@@ -69,7 +70,9 @@ public class SimplesAdapter extends RecyclerView.Adapter<SimplesAdapter.Holder> 
 
     @Override
     public void onBindViewHolder(final Holder holder, final int position) {
-        holder.binding.setEntity(simples.get(position));
+        final SimpleEntity entity = simples.get(position);
+        holder.binding.setEntity(entity);
+        holder.itemView.setSelected(selectedIds.contains(entity.id));
     }
 
     @Override

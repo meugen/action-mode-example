@@ -1,5 +1,7 @@
 package meugeninua.examples.actionmode.ui.activities.main.fragment.presenter;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -18,12 +20,15 @@ import timber.log.Timber;
 /**
  * @author meugen
  */
-public class MainPresenterImpl extends BasePresenter<MainState> implements MainPresenter {
+public class MainPresenterImpl extends BasePresenter<MainState>
+        implements MainPresenter {
 
     @Inject LifecycleHandler lifecycleHandler;
     @Inject AppActionApi<Void, List<SimpleEntity>> simplesActionApi;
     @Inject Observable<SimplesChangedEvent> simplesChangedObservable;
     @Inject MainView view;
+
+    private Collection<Integer> selectedIds;
 
     @Inject
     MainPresenterImpl() {}
@@ -35,13 +40,30 @@ public class MainPresenterImpl extends BasePresenter<MainState> implements MainP
     }
 
     @Override
+    public void addIdToSelected(final int id) {
+        selectedIds.add(id);
+    }
+
+    @Override
+    public void clearSelected() {
+        selectedIds.clear();
+    }
+
+    @Override
+    public Collection<Integer> getSelectedIds() {
+        return selectedIds;
+    }
+
+    @Override
     public void onRestoreState(final MainState state) {
         super.onRestoreState(state);
+        this.selectedIds = state.getSelectedIds();
     }
 
     @Override
     public void onSaveState(final MainState state) {
         super.onSaveState(state);
+        state.setSelectedIds(selectedIds);
     }
 
     private void subscribeToSimplesChanged() {
@@ -59,7 +81,14 @@ public class MainPresenterImpl extends BasePresenter<MainState> implements MainP
         final Disposable disposable = simplesActionApi
                 .action(null)
                 .compose(lifecycleHandler.load(LOADER_ID))
-                .subscribe(view::displaySimples, Timber::d);
+                .subscribe(this::displaySimples, Timber::d);
         getCompositeDisposable().add(disposable);
+    }
+
+    private void displaySimples(final List<SimpleEntity> simples) {
+        if (selectedIds == null) {
+            selectedIds = new ArrayList<>();
+        }
+        view.displaySimples(simples, selectedIds);
     }
 }

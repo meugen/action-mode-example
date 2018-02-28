@@ -17,7 +17,7 @@
         android:padding="5dp"
         tools:text="item"
         android:text="@{entity.data}"
-        android:background="?attr/selectableItemBackground"
+        android:background="@drawable/simple_item_background"
         android:onClick="@{() -> holder.onClick()}"
         android:onLongClick="@{() -> holder.onLongClick()}"/>
 </layout>

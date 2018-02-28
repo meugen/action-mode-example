@@ -12,11 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import meugeninua.examples.actionmode.R;
+import meugeninua.examples.actionmode.app.services.DeleteSelectedService;
 import meugeninua.examples.actionmode.databinding.FragmentMainBinding;
 import meugeninua.examples.actionmode.model.db.entities.SimpleEntity;
 import meugeninua.examples.actionmode.ui.activities.base.fragment.BaseFragment;
@@ -64,8 +66,14 @@ public class MainFragment extends BaseFragment<MainState, MainPresenter>
     }
 
     @Override
-    public void displaySimples(final List<SimpleEntity> simples) {
+    public void displaySimples(
+            final List<SimpleEntity> simples,
+            final Collection<Integer> selectedIds) {
         adapter.swapSimples(simples);
+        adapter.setSelected(selectedIds);
+        if (!selectedIds.isEmpty() && actionMode == null) {
+            activity.startSupportActionMode(this);
+        }
     }
 
     @Override
@@ -74,6 +82,7 @@ public class MainFragment extends BaseFragment<MainState, MainPresenter>
             return;
         }
         adapter.markSelected(position, entity);
+        presenter.addIdToSelected(entity.id);
     }
 
     @Override
@@ -83,6 +92,7 @@ public class MainFragment extends BaseFragment<MainState, MainPresenter>
         }
         activity.startSupportActionMode(this);
         adapter.markSelected(position, entity);
+        presenter.addIdToSelected(entity.id);
         return true;
     }
 
@@ -100,11 +110,19 @@ public class MainFragment extends BaseFragment<MainState, MainPresenter>
 
     @Override
     public boolean onActionItemClicked(final ActionMode mode, final MenuItem item) {
+        final int itemId = item.getItemId();
+        if (itemId == R.id.delete) {
+            DeleteSelectedService.enqueueWork(activity, presenter.getSelectedIds());
+            actionMode.finish();
+            return true;
+        }
         return false;
     }
 
     @Override
     public void onDestroyActionMode(final ActionMode mode) {
         this.actionMode = null;
+        presenter.clearSelected();
+        adapter.clearSelected();
     }
 }
