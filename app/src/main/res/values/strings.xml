@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Default Android</string>
+    <string name="menu_item_delete">Delete</string>
 </resources>

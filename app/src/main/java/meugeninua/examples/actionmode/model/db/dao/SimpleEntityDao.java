@@ -4,10 +4,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
-import java.util.Collection;
 import java.util.List;
-
-import javax.inject.Qualifier;
 
 import meugeninua.examples.actionmode.model.db.data.CountData;
 import meugeninua.examples.actionmode.model.db.entities.SimpleEntity;

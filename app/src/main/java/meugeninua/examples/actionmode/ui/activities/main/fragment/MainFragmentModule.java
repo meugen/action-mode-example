@@ -16,6 +16,7 @@ import meugeninua.examples.actionmode.model.api.simples.SimplesActionApi;
 import meugeninua.examples.actionmode.model.db.entities.SimpleEntity;
 import meugeninua.examples.actionmode.ui.activities.base.fragment.BaseFragmentModule;
 import meugeninua.examples.actionmode.ui.activities.base.fragment.LifecycleModule;
+import meugeninua.examples.actionmode.ui.activities.main.fragment.adapters.OnSimpleActionListener;
 import meugeninua.examples.actionmode.ui.activities.main.fragment.presenter.MainPresenter;
 import meugeninua.examples.actionmode.ui.activities.main.fragment.presenter.MainPresenterImpl;
 import meugeninua.examples.actionmode.ui.activities.main.fragment.state.MainState;
@@ -43,6 +44,10 @@ public abstract class MainFragmentModule {
     @Binds @PerFragment
     abstract AppActionApi<Void, List<SimpleEntity>> bindSimplesActionApi(
             final SimplesActionApi api);
+
+    @Binds @PerFragment
+    abstract OnSimpleActionListener bindOnSimpleActionListener(
+            final MainFragment fragment);
 
     @Provides @PerFragment
     static Observable<SimplesChangedEvent> provideSimplesChangedObservable(

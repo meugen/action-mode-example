@@ -5,7 +5,9 @@
 
     <data>
         <import type="meugeninua.examples.actionmode.model.db.entities.SimpleEntity"/>
+        <import type="meugeninua.examples.actionmode.ui.activities.main.fragment.adapters.SimplesAdapter.Holder"/>
         <variable name="entity" type="SimpleEntity"/>
+        <variable name="holder" type="Holder"/>
     </data>
     <TextView
         android:layout_width="match_parent"
@@ -14,5 +16,8 @@
         android:gravity="center_vertical|start"
         android:padding="5dp"
         tools:text="item"
-        android:text="@{entity.data}"/>
+        android:text="@{entity.data}"
+        android:background="?attr/selectableItemBackground"
+        android:onClick="@{() -> holder.onClick()}"
+        android:onLongClick="@{() -> holder.onLongClick()}"/>
 </layout>

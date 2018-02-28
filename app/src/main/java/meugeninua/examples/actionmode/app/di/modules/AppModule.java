@@ -3,7 +3,6 @@ package meugeninua.examples.actionmode.app.di.modules;
 import android.app.Application;
 import android.content.Context;
 
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Binds;

@@ -1,7 +1,7 @@
 package meugeninua.examples.actionmode.ui.activities.base.fragment.presenter;
 
-import meugeninua.examples.actionmode.ui.activities.base.fragment.state.MvpState;
 import io.reactivex.disposables.CompositeDisposable;
+import meugeninua.examples.actionmode.ui.activities.base.fragment.state.MvpState;
 
 /**
  * @author meugen

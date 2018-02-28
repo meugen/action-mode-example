@@ -1,12 +1,9 @@
 package meugeninua.examples.actionmode.app.managers.events;
 
-import android.content.Context;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 

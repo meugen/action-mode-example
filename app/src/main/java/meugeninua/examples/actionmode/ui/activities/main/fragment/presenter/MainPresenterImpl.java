@@ -1,8 +1,6 @@
 package meugeninua.examples.actionmode.ui.activities.main.fragment.presenter;
 
-import java.math.BigInteger;
 import java.util.List;
-import java.util.Random;
 
 import javax.inject.Inject;
 
