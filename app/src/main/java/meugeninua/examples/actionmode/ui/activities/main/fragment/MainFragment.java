@@ -69,8 +69,7 @@ public class MainFragment extends BaseFragment<MainState, MainPresenter>
     public void displaySimples(
             final List<SimpleEntity> simples,
             final Collection<Integer> selectedIds) {
-        adapter.swapSimples(simples);
-        adapter.setSelected(selectedIds);
+        adapter.swapSimples(simples, selectedIds);
         if (!selectedIds.isEmpty() && actionMode == null) {
             activity.startSupportActionMode(this);
         }

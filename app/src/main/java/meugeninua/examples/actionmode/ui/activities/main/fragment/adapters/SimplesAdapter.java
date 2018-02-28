@@ -19,6 +19,7 @@ import meugeninua.examples.actionmode.app.di.qualifiers.ActivityContext;
 import meugeninua.examples.actionmode.app.di.scopes.PerFragment;
 import meugeninua.examples.actionmode.databinding.ItemSimpleBinding;
 import meugeninua.examples.actionmode.model.db.entities.SimpleEntity;
+import meugeninua.examples.actionmode.model.utils.CollectionUtils;
 
 @PerFragment
 public class SimplesAdapter extends RecyclerView.Adapter<SimplesAdapter.Holder> {
@@ -39,17 +40,24 @@ public class SimplesAdapter extends RecyclerView.Adapter<SimplesAdapter.Holder> 
     }
 
     public void swapSimples(
-            final List<SimpleEntity> simples) {
+            final List<SimpleEntity> simples,
+            final Collection<Integer> selectedIds) {
+        final Collection<Integer> selectedChanges = CollectionUtils.xor(
+                this.selectedIds, selectedIds);
         final DiffUtil.DiffResult result = DiffUtil.calculateDiff(
-                new SimpleDiffCallback(this.simples, simples));
+                new SimpleDiffCallback(this.simples, simples, selectedChanges));
         this.simples = simples;
         result.dispatchUpdatesTo(this);
     }
 
     public void setSelected(final Collection<Integer> selectedIds) {
+        final Collection<Integer> selectedChanges = CollectionUtils.xor(
+                this.selectedIds, selectedIds);
+        final DiffUtil.DiffResult result = DiffUtil.calculateDiff(
+                new SimpleDiffCallback(simples, simples, selectedChanges));
         this.selectedIds.clear();
         this.selectedIds.addAll(selectedIds);
-        notifyDataSetChanged();
+        result.dispatchUpdatesTo(this);
     }
 
     public void markSelected(final int position, final SimpleEntity entity) {
@@ -105,12 +113,15 @@ public class SimplesAdapter extends RecyclerView.Adapter<SimplesAdapter.Holder> 
 
         private final List<SimpleEntity> oldItems;
         private final List<SimpleEntity> newItems;
+        private final Collection<Integer> selectedChanges;
 
         SimpleDiffCallback(
                 final List<SimpleEntity> oldItems,
-                final List<SimpleEntity> newItems) {
+                final List<SimpleEntity> newItems,
+                final Collection<Integer> selectedChanges) {
             this.oldItems = oldItems;
             this.newItems = newItems;
+            this.selectedChanges = selectedChanges;
         }
 
         @Override
@@ -132,10 +143,14 @@ public class SimplesAdapter extends RecyclerView.Adapter<SimplesAdapter.Holder> 
         }
 
         @Override
-        public boolean areContentsTheSame(final int oldItemPosition, final int newItemPosition) {
-            return ObjectsCompat.equals(
-                    oldItems.get(oldItemPosition),
-                    newItems.get(newItemPosition));
+        public boolean areContentsTheSame(
+                final int oldItemPosition,
+                final int newItemPosition) {
+            final SimpleEntity oldItem = oldItems.get(oldItemPosition);
+            final SimpleEntity newItem = newItems.get(newItemPosition);
+            return !selectedChanges.contains(oldItem.id)
+                    && !selectedChanges.contains(newItem.id)
+                    && ObjectsCompat.equals(oldItem, newItem);
         }
     }
 }
