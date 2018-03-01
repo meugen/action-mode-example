@@ -149,7 +149,9 @@ public class SimplesAdapter extends RecyclerView.Adapter<SimplesAdapter.Holder> 
             final SimpleEntity oldItem = oldItems.get(oldItemPosition);
             final SimpleEntity newItem = newItems.get(newItemPosition);
             return !selectedChanges.contains(oldItem.id)
-                    && !selectedChanges.contains(newItem.id)
+                    // According to javadocs of base method oldItem.id and newItem.id are equals
+                    // so we don't need to check next line
+                    // && !selectedChanges.contains(newItem.id)
                     && ObjectsCompat.equals(oldItem, newItem);
         }
     }
