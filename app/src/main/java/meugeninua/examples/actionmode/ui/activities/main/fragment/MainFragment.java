@@ -42,7 +42,7 @@ public class MainFragment extends BaseFragment<MainState, MainPresenter>
 
     @Override
     public View onCreateView(
-            final LayoutInflater inflater,
+            @NonNull final LayoutInflater inflater,
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState) {
         binding = FragmentMainBinding.inflate(inflater, container, false);

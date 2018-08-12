@@ -7,6 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import meugeninua.examples.actionmode.app.managers.events.SimplesChangedEvent;
 import meugeninua.examples.actionmode.model.api.AppActionApi;
@@ -68,6 +69,7 @@ public class MainPresenterImpl extends BasePresenter<MainState>
 
     private void subscribeToSimplesChanged() {
         final Disposable disposable = simplesChangedObservable
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(event -> reload());
         getCompositeDisposable().add(disposable);
     }

@@ -26,25 +26,21 @@ android {
 }
 
 dependencies {
-    implementation libs.support.core
-    implementation libs.support.appcompat
-    implementation libs.support.constraint
-    implementation libs.support.recyclerview
+    implementation "${packages.support}:support-v4:${versions.support}"
+    implementation "${packages.support}:appcompat-v7:${versions.support}"
+    implementation "${packages.support}.constraint:constraint-layout:1.0.2"
+    implementation "${packages.support}:recyclerview-v7:${versions.support}"
 
-    implementation libs.rx.java
-    implementation libs.rx.android
+    implementation "${packages.rxjava2}:rxjava:${versions.rxandroid2}"
+    implementation "${packages.rxjava2}:rxandroid:${versions.rxandroid2}"
 
-    implementation libs.dagger.core
-    annotationProcessor libs.dagger.compiler
-    implementation libs.dagger.android.core
-    annotationProcessor libs.dagger.android.processor
+    implementation "${packages.dagger}:dagger:${versions.dagger}"
+    annotationProcessor "${packages.dagger}:dagger-compiler:${versions.dagger}"
+    implementation "${packages.dagger}:dagger-android-support:${versions.dagger}"
+    annotationProcessor "${packages.dagger}:dagger-android-processor:${versions.dagger}"
 
-    implementation libs.room.runtime
-    annotationProcessor libs.room.compiler
+    implementation "${packages.room}:runtime:${versions.room}"
+    annotationProcessor "${packages.room}:compiler:${versions.room}"
 
-    implementation libs.timber
-
-    testImplementation libs.test.junit
-    androidTestImplementation libs.test.runner
-    androidTestImplementation libs.test.espresso
+    implementation "com.jakewharton.timber:timber:4.7.1"
 }
