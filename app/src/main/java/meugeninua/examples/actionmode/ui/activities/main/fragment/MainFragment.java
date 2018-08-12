@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
-import android.support.v7.widget.DividerItemDecoration;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,11 +18,11 @@ import javax.inject.Inject;
 
 import meugeninua.examples.actionmode.R;
 import meugeninua.examples.actionmode.app.services.DeleteSelectedService;
-import meugeninua.examples.actionmode.databinding.FragmentMainBinding;
 import meugeninua.examples.actionmode.model.db.entities.SimpleEntity;
 import meugeninua.examples.actionmode.ui.activities.base.fragment.BaseFragment;
 import meugeninua.examples.actionmode.ui.activities.main.fragment.adapters.OnSimpleActionListener;
 import meugeninua.examples.actionmode.ui.activities.main.fragment.adapters.SimplesAdapter;
+import meugeninua.examples.actionmode.ui.activities.main.fragment.binding.MainBinding;
 import meugeninua.examples.actionmode.ui.activities.main.fragment.presenter.MainPresenter;
 import meugeninua.examples.actionmode.ui.activities.main.fragment.state.MainState;
 import meugeninua.examples.actionmode.ui.activities.main.fragment.view.MainView;
@@ -31,10 +30,9 @@ import meugeninua.examples.actionmode.ui.activities.main.fragment.view.MainView;
 /**
  * @author meugen
  */
-public class MainFragment extends BaseFragment<MainState, MainPresenter>
+public class MainFragment extends BaseFragment<MainState, MainPresenter, MainBinding>
         implements MainView, OnSimpleActionListener, ActionMode.Callback {
 
-    private FragmentMainBinding binding;
     private ActionMode actionMode;
 
     @Inject AppCompatActivity activity;
@@ -45,8 +43,8 @@ public class MainFragment extends BaseFragment<MainState, MainPresenter>
             @NonNull final LayoutInflater inflater,
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState) {
-        binding = FragmentMainBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+        return inflater.inflate(R.layout.fragment_main,
+                container, false);
     }
 
     @Override
@@ -54,9 +52,7 @@ public class MainFragment extends BaseFragment<MainState, MainPresenter>
             @NonNull final View view,
             @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.recycler.addItemDecoration(new DividerItemDecoration(
-                activity, DividerItemDecoration.VERTICAL));
-        binding.recycler.setAdapter(adapter);
+        binding.setupRecycler(adapter);
     }
 
     @Override

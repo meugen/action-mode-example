@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-        <import type="meugeninua.examples.actionmode.model.db.entities.SimpleEntity"/>
-        <import type="meugeninua.examples.actionmode.ui.activities.main.fragment.adapters.SimplesAdapter.Holder"/>
-        <variable name="entity" type="SimpleEntity"/>
-        <variable name="holder" type="Holder"/>
-    </data>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="?attr/listPreferredItemHeight"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:gravity="center_vertical|start"
-        android:padding="5dp"
-        tools:text="item"
-        android:text="@{entity.data}"
-        android:background="@drawable/simple_item_background"
-        android:onClick="@{() -> holder.onClick()}"
-        android:onLongClick="@{() -> holder.onLongClick()}"/>
-</layout>
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/listPreferredItemHeight"
+    android:textAppearance="?attr/textAppearanceListItem"
+    android:gravity="center_vertical|start"
+    android:padding="5dp"
+    tools:text="item"
+    android:background="@drawable/simple_item_background"
+    android:id="@+id/text"/>

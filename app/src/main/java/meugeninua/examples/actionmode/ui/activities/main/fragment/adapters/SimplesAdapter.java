@@ -1,12 +1,15 @@
 package meugeninua.examples.actionmode.ui.activities.main.fragment.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArraySet;
 import android.support.v4.util.ObjectsCompat;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -15,13 +18,11 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import meugeninua.examples.actionmode.R;
 import meugeninua.examples.actionmode.app.di.qualifiers.ActivityContext;
-import meugeninua.examples.actionmode.app.di.scopes.PerFragment;
-import meugeninua.examples.actionmode.databinding.ItemSimpleBinding;
 import meugeninua.examples.actionmode.model.db.entities.SimpleEntity;
 import meugeninua.examples.actionmode.model.utils.CollectionUtils;
 
-@PerFragment
 public class SimplesAdapter extends RecyclerView.Adapter<SimplesAdapter.Holder> {
 
     private final LayoutInflater inflater;
@@ -50,7 +51,7 @@ public class SimplesAdapter extends RecyclerView.Adapter<SimplesAdapter.Holder> 
         result.dispatchUpdatesTo(this);
     }
 
-    public void setSelected(final Collection<Integer> selectedIds) {
+    private void setSelected(final Collection<Integer> selectedIds) {
         final Collection<Integer> selectedChanges = CollectionUtils.xor(
                 this.selectedIds, selectedIds);
         final DiffUtil.DiffResult result = DiffUtil.calculateDiff(
@@ -69,18 +70,17 @@ public class SimplesAdapter extends RecyclerView.Adapter<SimplesAdapter.Holder> 
         setSelected(Collections.emptyList());
     }
 
+    @NonNull
     @Override
-    public Holder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-        final ItemSimpleBinding binding = ItemSimpleBinding
-                .inflate(inflater, parent, false);
-        return new Holder(binding, listener);
+    public Holder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
+        final View view = inflater.inflate(R.layout.item_simple, parent, false);
+        return new Holder(view, listener);
     }
 
     @Override
-    public void onBindViewHolder(final Holder holder, final int position) {
+    public void onBindViewHolder(@NonNull final Holder holder, final int position) {
         final SimpleEntity entity = simples.get(position);
-        holder.binding.setEntity(entity);
-        holder.itemView.setSelected(selectedIds.contains(entity.id));
+        holder.bind(entity, selectedIds);
     }
 
     @Override
@@ -88,24 +88,37 @@ public class SimplesAdapter extends RecyclerView.Adapter<SimplesAdapter.Holder> 
         return simples.size();
     }
 
-    public static class Holder extends RecyclerView.ViewHolder {
+    public static class Holder extends RecyclerView.ViewHolder
+            implements View.OnClickListener, View.OnLongClickListener {
 
-        final ItemSimpleBinding binding;
-        final OnSimpleActionListener listener;
+        private final TextView textView;
+        private final OnSimpleActionListener listener;
 
-        Holder(final ItemSimpleBinding binding, final OnSimpleActionListener listener) {
-            super(binding.getRoot());
-            this.binding = binding;
+        private SimpleEntity entity;
+
+        Holder(final View view, final OnSimpleActionListener listener) {
+            super(view);
+            this.textView = view.findViewById(R.id.text);
             this.listener = listener;
-            this.binding.setHolder(this);
+            this.textView.setOnClickListener(this);
+            this.textView.setOnLongClickListener(this);
+
         }
 
-        public void onClick() {
-            listener.onSimpleClick(getAdapterPosition(), binding.getEntity());
+        @Override
+        public void onClick(final View v) {
+            listener.onSimpleClick(getAdapterPosition(), entity);
         }
 
-        public boolean onLongClick() {
-            return listener.onSimpleLongClick(getAdapterPosition(), binding.getEntity());
+        @Override
+        public boolean onLongClick(final View v) {
+            return listener.onSimpleLongClick(getAdapterPosition(), entity);
+        }
+
+        void bind(final SimpleEntity entity, final Set<Integer> selectedIds) {
+            this.entity = entity;
+            textView.setText(entity.data);
+            textView.setSelected(selectedIds.contains(entity.id));
         }
     }
 

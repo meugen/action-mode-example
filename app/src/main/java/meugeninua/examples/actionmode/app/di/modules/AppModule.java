@@ -3,8 +3,6 @@ package meugeninua.examples.actionmode.app.di.modules;
 import android.app.Application;
 import android.content.Context;
 
-import javax.inject.Singleton;
-
 import dagger.Binds;
 import dagger.Module;
 import dagger.android.support.AndroidSupportInjectionModule;
@@ -18,9 +16,9 @@ import meugeninua.examples.actionmode.app.di.qualifiers.AppContext;
         ComponentsModule.class, DbModule.class})
 public abstract class AppModule {
 
-    @Binds @Singleton
+    @Binds
     abstract Application bindApplication(final ActionModeApp app);
 
-    @Binds @AppContext @Singleton
+    @Binds @AppContext
     abstract Context bindAppContext(final Application application);
 }
